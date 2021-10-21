@@ -1,0 +1,20 @@
+name: excel_to_json
+description: A package that allows you to transform your excel to JSON
+version: 0.0.1
+homepage: https://github.com/vitoramaral10/excel_to_json
+
+environment:
+  sdk: ">=2.12.1 <3.0.0"
+
+dependencies:
+  excel: ^2.0.0-null-safety-3
+  file_picker: ^4.1.5
+  flutter:
+    sdk: flutter
+  path_provider: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter: null
