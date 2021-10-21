@@ -1,6 +1,6 @@
 name: excel_to_json
 description: A package that allows you to transform your excel to JSON
-version: 0.0.1
+version: 0.0.1-dev.1
 homepage: https://github.com/vitoramaral10/excel_to_json
 
 environment:
