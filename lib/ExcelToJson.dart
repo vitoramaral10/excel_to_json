@@ -6,8 +6,8 @@ import 'package:file_picker/file_picker.dart';
 
 class ExcelToJson {
   Future<String?> convert() async {
-    FilePickerResult? file =
-        await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xlsx', 'csv', 'xls']);
+    FilePickerResult? file = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ['xlsx', 'csv', 'xls']);
     if (file != null && file.files.isNotEmpty) {
       var bytes = File(file.files.first.path!).readAsBytesSync();
       var excel = Excel.decodeBytes(bytes);
@@ -26,7 +26,9 @@ class ExcelToJson {
               String tk = '';
               for (var key in keys) {
                 tk = key.value;
-                temp[tk] = (row[j].runtimeType == String) ? "\u201C" + row[j].value + "\u201D" : row[j].value;
+                temp[tk] = (row[j].runtimeType == String)
+                    ? "\u201C" + row[j].value + "\u201D"
+                    : row[j].value;
                 j++;
               }
               json.add(temp);
