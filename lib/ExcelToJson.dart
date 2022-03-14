@@ -38,7 +38,6 @@ class ExcelToJson {
       }
       String fullJson = jsonEncode(json);
 
-      File(file.files.first.path!).delete();
       return fullJson;
     }
     return null;
