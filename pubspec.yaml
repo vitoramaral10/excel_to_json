@@ -8,12 +8,14 @@ environment:
 
 dependencies:
   excel: ^2.0.0-null-safety-3
-  file_picker: ^4.1.5
+  file_picker: ^5.2.2
   flutter:
     sdk: flutter
   path_provider: ^2.0.5
 
 dev_dependencies:
+  dart_code_metrics: ^4.19.1
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 
