@@ -3,7 +3,7 @@ library excel_to_json;
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:excel/excel.dart';
+import 'package:excel_facility/excel_facility.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
