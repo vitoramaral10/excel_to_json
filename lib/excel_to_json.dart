@@ -7,7 +7,9 @@ import 'package:excel_facility/excel_facility.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
+/// This is the main project class.
 class ExcelToJson {
+  /// Use this method to convert the file to a json.
   Future<String?> convert() async {
     FilePickerResult? file = await FilePicker.platform.pickFiles(
       withData: true,
