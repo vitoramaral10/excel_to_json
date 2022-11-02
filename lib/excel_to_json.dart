@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 class ExcelToJson {
   Future<String?> convert() async {
     FilePickerResult? file = await FilePicker.platform.pickFiles(
+      withData: true,
       type: FileType.custom,
       allowedExtensions: ['xlsx', 'csv', 'xls'],
     );
@@ -33,11 +34,19 @@ class ExcelToJson {
               String tk = '';
 
               for (var key in keys) {
-                tk = key.value;
-                temp[tk] = (row[j].runtimeType == String)
-                    ? "\u201C${row[j].value}\u201D"
-                    : row[j].value;
-                j++;
+                if (key != null && key.value != null) {
+                  tk = key.value.toString();
+                  if ((row[j].runtimeType == String)) {
+                    temp[tk] = "\u201C${row[j].value}\u201D";
+                  } else {
+                    if (row[j] != null) {
+                      temp[tk] = row[j].value.toString();
+                    } else {
+                      temp[tk] = '';
+                    }
+                  }
+                  j++;
+                }
               }
               json.add(temp);
             }

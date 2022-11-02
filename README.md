@@ -1,4 +1,9 @@
 # excel_to_json
+```
+THIS PROJECT DON'T RECOGNIZE EXCEL FORMULES
+```
+
+If you know how to solve this problem, please help this project.
 
 A package that allows you to transform your excel to the following format:
 1. Excel To JSON
