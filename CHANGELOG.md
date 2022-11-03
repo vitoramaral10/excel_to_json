@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/vitoramaral10/excel_to_json/compare/v1.0.1...v1.1.0) (2022-11-03)
+
+
+### Features
+
+* melhorias na tipagem dos valores do excel ([13e7e2e](https://github.com/vitoramaral10/excel_to_json/commit/13e7e2ed07b5c0e98f55115c7795b902555cf88c))
+
 ### [1.0.1](https://github.com/vitoramaral10/excel_to_json/compare/v1.0.0...v1.0.1) (2022-11-02)
 
 
