@@ -16,7 +16,7 @@ class ExcelToJson {
     if (excel != null) {
       List<String> tables = _getTables(excel);
 
-      int i = 0;
+      int index = 0;
       Map<String, dynamic> json = {};
 
       for (String table in tables) {
@@ -25,9 +25,9 @@ class ExcelToJson {
 
         for (List<Data?> row in excel.tables[table]?.rows ?? []) {
           try {
-            if (i == 0) {
+            if (index == 0) {
               keys = row;
-              i++;
+              index++;
             } else {
               Map<String, dynamic> temp = _getRows(keys, row);
 
@@ -39,7 +39,7 @@ class ExcelToJson {
             rethrow;
           }
         }
-        i = 0;
+        index = 0;
       }
 
       return jsonEncode(json);
@@ -50,7 +50,7 @@ class ExcelToJson {
 
   Map<String, dynamic> _getRows(List<Data?> keys, List<Data?> row) {
     Map<String, dynamic> temp = {};
-    int j = 0;
+    int index = 0;
     String tk = '';
 
     for (Data? key in keys) {
@@ -62,19 +62,19 @@ class ExcelToJson {
           CellType.int,
           CellType.double,
           CellType.bool,
-        ].contains(row[j]?.cellType)) {
-          if (row[j]?.value == 'true') {
+        ].contains(row[index]?.cellType)) {
+          if (row[index]?.value == 'true') {
             temp[tk] = true;
-          } else if (row[j]?.value == 'false') {
+          } else if (row[index]?.value == 'false') {
             temp[tk] = false;
           } else {
-            temp[tk] = row[j]?.value;
+            temp[tk] = row[index]?.value;
           }
-        } else if (row[j]?.cellType == CellType.Formula) {
-          temp[tk] = row[j]?.value.toString();
+        } else if (row[index]?.cellType == CellType.Formula) {
+          temp[tk] = row[index]?.value.toString();
         }
 
-        j++;
+        index++;
       }
     }
 
