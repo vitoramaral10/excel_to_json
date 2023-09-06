@@ -1,10 +1,10 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "devDependencies": {
     "auto-changelog": "^2.4.0"
   },
   "scripts": {
-    "release": "auto-changelog"
+    "changelog": "auto-changelog"
   },
   "name": "excel_to_json",
   "description": "```\r THIS PROJECT DON'T RECOGNIZE EXCEL FORMULES\r ```",
