@@ -1,16 +1,20 @@
 # Changelog
 
+## [v1.3.0] - 25 June 2024
+
+- update flutter version to 3.22.2
+
 ## [v1.2.0](https://github.com/vitoramaral10/excel_to_json/compare/v1.1.0...v1.2.0) - 6 September 2023
 
 ### Features
 
-*  update  sdk: "&gt;=3.1.0 &lt;4.0.0" and flutter: "&gt;=1.17.0" ([`a04ea31`](https://github.com/vitoramaral10/excel_to_json/commit/a04ea31ef1287b1669a296f827a64d26586bd0cc))
+- update sdk: "&gt;=3.1.0 &lt;4.0.0" and flutter: "&gt;=1.17.0" ([`a04ea31`](https://github.com/vitoramaral10/excel_to_json/commit/a04ea31ef1287b1669a296f827a64d26586bd0cc))
 
 ## [v1.1.0](https://github.com/vitoramaral10/excel_to_json/compare/v1.0.1...v1.1.0) - 3 November 2022
 
 ### Features
 
-*  melhorias na tipagem dos valores do excel ([`13e7e2e`](https://github.com/vitoramaral10/excel_to_json/commit/13e7e2ed07b5c0e98f55115c7795b902555cf88c))
+- melhorias na tipagem dos valores do excel ([`13e7e2e`](https://github.com/vitoramaral10/excel_to_json/commit/13e7e2ed07b5c0e98f55115c7795b902555cf88c))
 
 ## [v1.0.1](https://github.com/vitoramaral10/excel_to_json/compare/v1.0.0...v1.0.1) - 1 November 2022
 
@@ -20,6 +24,6 @@
 
 ### Features
 
-*  ajustes de refinamento ([`ec67bb6`](https://github.com/vitoramaral10/excel_to_json/commit/ec67bb616e55e178e194eb94d322dc675a65fae0))
+- ajustes de refinamento ([`ec67bb6`](https://github.com/vitoramaral10/excel_to_json/commit/ec67bb616e55e178e194eb94d322dc675a65fae0))
 
 ## [v0.0.2-dev.1]() - 14 March 2022
