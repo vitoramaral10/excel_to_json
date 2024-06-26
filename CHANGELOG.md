@@ -1,11 +1,19 @@
 # Changelog
 
+## [v1.4.0] - 26 June 2024
+
+## What's Changed
+
+- Update excel dependency to version 4.0.3 by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/15
+- Update contributing guidelines and code of conduct by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/15
+
 ## [v1.3.0] - 25 June 2024
 
 ## What's Changed
-* Merge tag 'v1.2.0' into develop by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/13
-* Update flutter by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/14
-* Fixed CVE-2024-4068 by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/security/dependabot/2
+
+- Merge tag 'v1.2.0' into develop by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/13
+- Update flutter by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/14
+- Fixed CVE-2024-4068 by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/security/dependabot/2
 
 ## [v1.2.0](https://github.com/vitoramaral10/excel_to_json/compare/v1.1.0...v1.2.0) - 6 September 2023
 
