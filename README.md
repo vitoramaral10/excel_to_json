@@ -1,17 +1,35 @@
-# excel_to_json
+# Excel to Json
+
+A package that converts `XLSX` files to `JSON` files.
+
+## Warning
+
+This project only recognizes `XLSX` files and converts them into json files.
+
+## Installation
+
+```bash
+    flutter pub add excel_to_json
 ```
-THIS PROJECT DON'T RECOGNIZE EXCEL FORMULES
+
+## Usage
+
+```dart
+import 'package:excel_to_json/excel_to_json.dart';
+
+void main() {
+  final excelToJson = ExcelToJson();
+
+  String? excel = await excelToJson.convert();
+}
 ```
 
-If you know how to solve this problem, please help this project.
+## License
 
-A package that allows you to transform your excel to the following format:
-1. Excel To JSON
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Getting Started
+## Community
 
-At current the package allows you to use the following function (note: currently xlsx file type gives not perfect results):<br />
-# 1.convert()<br />
-    - automatically lets you pick an excel file and returns a string containing the entire converted json
-<br />
-For implementation have a look at the attached example file in the github repository.<br />       
+### How to contribute
+
+We welcome contributions to this project. Please read the [Contributing Guidelines](CONTRIBUTING.md) for more information.
