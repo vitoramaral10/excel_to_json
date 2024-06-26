@@ -13,9 +13,15 @@ class Home extends StatelessWidget {
         child: ElevatedButton(
           child: const Text("PRESS TO UPLOAD EXCEL AND CONVERT TO JSON"),
           onPressed: () async {
-            String? excel = await ExcelToJson().convert();
-            if (kDebugMode) {
-              print(excel);
+            try {
+              String? excel = await ExcelToJson().convert();
+              if (kDebugMode) {
+                print(excel);
+              }
+            } on Exception catch (e) {
+              if (kDebugMode) {
+                print(e);
+              }
             }
           },
         ),
