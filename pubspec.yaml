@@ -17,9 +17,6 @@ topics:
   - converter
   - spreadsheet
   - xlsx
-  - data-conversion
-  - flutter-package
-  - dart-package
 
 platforms:
   android:
