@@ -1,5 +1,10 @@
 # Changelog
 
+## [v1.5.1] - August 6, 2025
+
+### 📝 Documentation Changes
+- Updated package description in pubspec.yaml as requested by pub.dev for better compliance with publishing guidelines
+
 ## [v1.5.0] - August 6, 2025
 
 ### 🎉 Major Improvements & New Features

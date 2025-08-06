@@ -1,6 +1,6 @@
 name: excel_to_json
 description: A Flutter package that converts Excel (.xlsx) files to JSON format with multiple worksheets support and comprehensive error handling.
-version: 1.5.0
+version: 1.5.1
 homepage: https://github.com/vitoramaral10/excel_to_json
 repository: https://github.com/vitoramaral10/excel_to_json
 issue_tracker: https://github.com/vitoramaral10/excel_to_json/issues
