@@ -1,9 +1,65 @@
 # Changelog
 
+## [v1.5.0] - August 6, 2025
+
+### 🎉 Major Improvements & New Features
+
+#### ✨ New Features
+- **Configuration System**: Added `ExcelToJsonConfig` class for customizable conversion options
+- **Custom Exception Handling**: Introduced `ExcelToJsonException` for better error reporting
+- **Enhanced Logging**: Optional verbose logging during conversion process
+- **Empty Row Handling**: Configurable option to include or exclude empty rows
+- **Better Type Safety**: Improved cell value conversion with comprehensive type handling
+
+#### 🔧 Code Improvements
+- **Complete API Refactor**: More intuitive and flexible API design
+- **Comprehensive Documentation**: Added detailed inline documentation for all public APIs
+- **Better Error Messages**: More descriptive error messages with contextual information
+- **Performance Optimization**: Streamlined conversion process with better memory usage
+- **Code Quality**: Enhanced code structure with better separation of concerns
+
+#### 📚 Documentation Enhancements
+- **Comprehensive README**: Complete rewrite with examples, configuration options, and troubleshooting
+- **API Documentation**: Detailed documentation for all classes and methods
+- **Usage Examples**: Multiple usage patterns from basic to advanced
+- **Platform Support**: Clear documentation of supported platforms and limitations
+
+#### 🧪 Testing Improvements
+- **Unit Tests**: Added comprehensive unit tests for all major components
+- **Widget Tests**: Improved example app tests with better coverage
+- **Example App**: Complete redesign with modern Material Design 3 UI
+- **Interactive Demo**: Enhanced example with configuration options and result display
+
+#### 🛠️ Technical Improvements
+- **Better File Handling**: Enhanced file picker integration with proper error handling
+- **Type Safety**: Improved type definitions and null safety
+- **Memory Management**: Better handling of large Excel files
+- **Cross-Platform**: Verified compatibility across all supported platforms
+
+### 📝 Breaking Changes
+- Constructor now accepts optional `ExcelToJsonConfig` parameter
+- Enhanced error handling may require updating catch blocks to handle `ExcelToJsonException`
+- Some internal methods have been refactored (private APIs)
+
+### 🔄 Migration Guide
+```dart
+// Old usage (still supported)
+final converter = ExcelToJson();
+final result = await converter.convert();
+
+// New usage with configuration
+final converter = ExcelToJson(
+  config: ExcelToJsonConfig(
+    includeEmptyRows: true,
+    verbose: true,
+  ),
+);
+final result = await converter.convert();
+```
+
 ## [v1.4.0] - 26 June 2024
 
-## What's Changed
-
+### What's Changed
 - Update excel dependency to version 4.0.3 by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/15
 - Update contributing guidelines and code of conduct by @vitoramaral10 in https://github.com/vitoramaral10/excel_to_json/pull/15
 

@@ -1,8 +1,33 @@
 name: excel_to_json
-description: A package that allows you to transform excel files to JSON format
-  for friendly use in your project.
-version: 1.4.0
+description: >
+  A Flutter package that converts Excel (.xlsx) files to JSON format. 
+  Features: multiple worksheets support, type-safe cell conversion, 
+  configurable options, comprehensive error handling, and cross-platform compatibility.
+version: 1.5.0
 homepage: https://github.com/vitoramaral10/excel_to_json
+repository: https://github.com/vitoramaral10/excel_to_json
+issue_tracker: https://github.com/vitoramaral10/excel_to_json/issues
+documentation: https://github.com/vitoramaral10/excel_to_json#readme
+funding:
+  - https://github.com/sponsors/vitoramaral10
+
+topics:
+  - excel
+  - json
+  - converter
+  - spreadsheet
+  - xlsx
+  - data-conversion
+  - flutter-package
+  - dart-package
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
 
 environment:
   sdk: ">=3.1.0 <4.0.0"
@@ -10,13 +35,12 @@ environment:
 
 dependencies:
   excel: ^4.0.3
-  file_picker: ^8.0.5
+  file_picker: ^10.2.1
   flutter:
     sdk: flutter
-  path_provider: ^2.1.1
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
 

@@ -1,0 +1,15 @@
+dartdoc:
+  categoryOrder: ["Excel Conversion", "Configuration", "Error Handling"]
+  linkTo:
+    hosted:
+      - package:excel
+      - package:file_picker
+      - package:flutter
+  exclude:
+    - dart:io
+  includeExternal:
+    - bin/cache/dart-sdk/lib/_internal
+  showUndocumentedCategories: false
+  toolOptions:
+    flutter:
+      showWarnings: false
