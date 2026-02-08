@@ -4,6 +4,18 @@ import 'dart:developer';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
+
+/// Callback function for reporting conversion progress
+///
+/// [current] - The current item being processed
+/// [total] - The total number of items to process
+/// [message] - A descriptive message about the current operation
+typedef ProgressCallback = void Function(
+  int current,
+  int total,
+  String message,
+);
 
 /// Configuration options for Excel to JSON conversion
 class ExcelToJsonConfig {
@@ -11,13 +23,18 @@ class ExcelToJsonConfig {
   ///
   /// [includeEmptyRows] - Whether to include rows where all cells are empty
   /// [useDateTimeStrings] - Whether to convert date/time values to strings
-  /// [dateFormat] - Custom date format pattern (future feature)
+  /// [dateFormat] - Custom date format pattern (uses intl DateFormat)
   /// [verbose] - Whether to enable detailed logging during conversion
+  /// [onProgress] - Optional callback to receive conversion progress updates
+  /// [selectedWorksheets] - Optional list of worksheet names to convert.
+  ///   If null or empty, all worksheets will be converted.
   const ExcelToJsonConfig({
     this.includeEmptyRows = false,
     this.useDateTimeStrings = true,
     this.dateFormat,
     this.verbose = false,
+    this.onProgress,
+    this.selectedWorksheets,
   });
 
   /// Whether to include empty rows in the output
@@ -26,11 +43,32 @@ class ExcelToJsonConfig {
   /// Whether to convert date/time values to ISO strings or keep original format
   final bool useDateTimeStrings;
 
-  /// Custom date format pattern (if useDateTimeStrings is false)
+  /// Custom date format pattern for formatting date values
+  ///
+  /// Uses the intl package's DateFormat patterns.
+  /// Examples: 'yyyy-MM-dd', 'dd/MM/yyyy HH:mm:ss', 'MMM d, y'
+  ///
+  /// If null, dates will be converted using toString() when useDateTimeStrings is true.
   final String? dateFormat;
 
   /// Whether to log conversion progress
   final bool verbose;
+
+  /// Optional callback to receive progress updates during conversion
+  ///
+  /// The callback will be invoked at key points during the conversion:
+  /// - When starting to process a worksheet
+  /// - Periodically during row processing
+  /// - When completing a worksheet
+  final ProgressCallback? onProgress;
+
+  /// Optional list of worksheet names to convert
+  ///
+  /// If provided and not empty, only the worksheets with names in this list
+  /// will be converted. If null or empty, all worksheets will be converted.
+  ///
+  /// Example: `selectedWorksheets: ['Sheet1', 'Products']`
+  final List<String>? selectedWorksheets;
 }
 
 /// Exception thrown when Excel to JSON conversion fails
@@ -112,18 +150,44 @@ class ExcelToJson {
         return null;
       }
 
-      final List<String> tables = _getTables(excel);
+      List<String> tables = _getTables(excel);
+      
+      // Filter worksheets if selectedWorksheets is specified
+      if (config.selectedWorksheets != null &&
+          config.selectedWorksheets!.isNotEmpty) {
+        tables = tables
+            .where((table) => config.selectedWorksheets!.contains(table))
+            .toList();
+        
+        if (config.verbose) {
+          log('Filtering to selected worksheets: ${config.selectedWorksheets!.join(', ')}');
+        }
+      }
+      
       if (config.verbose) {
         log('Found ${tables.length} worksheet(s): ${tables.join(', ')}');
       }
 
+      // Report initial progress
+      config.onProgress?.call(0, tables.length, 'Starting conversion...');
+
       int index = 0;
       final Map<String, dynamic> json = {};
+      int tableIndex = 0;
 
       for (final String table in tables) {
+        tableIndex++;
+        
         if (config.verbose) {
-          log('Processing worksheet: $table');
+          log('Processing worksheet: $table ($tableIndex/${tables.length})');
         }
+
+        // Report progress for starting this worksheet
+        config.onProgress?.call(
+          tableIndex - 1,
+          tables.length,
+          'Processing worksheet: $table',
+        );
 
         List<Data?> keys = [];
         json.addAll({table: []});
@@ -142,6 +206,15 @@ class ExcelToJson {
               if (temp.isNotEmpty || config.includeEmptyRows) {
                 json[table].add(temp);
                 processedRows++;
+                
+                // Report progress periodically (every 100 rows)
+                if (processedRows % 100 == 0) {
+                  config.onProgress?.call(
+                    tableIndex - 1,
+                    tables.length,
+                    'Processing worksheet: $table ($processedRows rows)',
+                  );
+                }
               }
             }
           } on Exception catch (ex) {
@@ -156,6 +229,13 @@ class ExcelToJson {
         if (config.verbose) {
           log('Processed $processedRows rows from worksheet: $table');
         }
+        
+        // Report progress for completing this worksheet
+        config.onProgress?.call(
+          tableIndex,
+          tables.length,
+          'Completed worksheet: $table ($processedRows rows)',
+        );
 
         index = 0;
       }
@@ -163,6 +243,13 @@ class ExcelToJson {
       if (config.verbose) {
         log('Excel to JSON conversion completed successfully');
       }
+
+      // Report final progress
+      config.onProgress?.call(
+        tables.length,
+        tables.length,
+        'Conversion complete',
+      );
 
       return jsonEncode(json);
     } on ExcelToJsonException {
@@ -224,13 +311,56 @@ class ExcelToJson {
       case DoubleCellValue():
         return value.value;
       case DateCellValue():
-        return config.useDateTimeStrings ? value.toString() : value;
+        return _formatDateTime(
+          DateTime(value.year, value.month, value.day),
+        );
       case TimeCellValue():
-        return config.useDateTimeStrings ? value.toString() : value;
+        return _formatDateTime(
+          DateTime(2000, 1, 1, value.hour, value.minute, value.second),
+        );
       case DateTimeCellValue():
-        return config.useDateTimeStrings ? value.toString() : value;
+        return _formatDateTime(
+          DateTime(
+            value.year,
+            value.month,
+            value.day,
+            value.hour,
+            value.minute,
+            value.second,
+          ),
+        );
       default:
         return value.toString();
+    }
+  }
+
+  /// Formats a DateTime value based on configuration
+  ///
+  /// [dateTime] - The DateTime to format
+  ///
+  /// Returns a formatted string. Always returns a string to ensure JSON serialization works.
+  String _formatDateTime(final DateTime dateTime) {
+    // Always convert to string for JSON compatibility
+    if (config.dateFormat != null) {
+      try {
+        final formatter = DateFormat(config.dateFormat);
+        return formatter.format(dateTime);
+      } on Exception catch (e) {
+        if (config.verbose) {
+          log('Warning: Failed to format date with pattern "${config.dateFormat}": $e');
+        }
+        // Fall back to ISO 8601 string if format fails
+        return dateTime.toIso8601String();
+      }
+    }
+
+    // Default formatting based on useDateTimeStrings
+    if (config.useDateTimeStrings) {
+      return dateTime.toIso8601String();
+    } else {
+      // Even when useDateTimeStrings is false, we must return a string for JSON
+      // Use a simple format instead of ISO 8601
+      return dateTime.toString();
     }
   }
 

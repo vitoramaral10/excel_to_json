@@ -1,0 +1,56 @@
+name: Publish to pub.dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (do not publish)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.0'
+          channel: 'stable'
+          cache: true
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Run tests
+        run: flutter test
+      
+      - name: Run analyzer
+        run: flutter analyze
+      
+      - name: Check formatting
+        run: dart format --set-exit-if-changed .
+      
+      - name: Dry run publish
+        if: github.event.inputs.dry_run == 'true' || github.event_name == 'push'
+        run: flutter pub publish --dry-run
+      
+      - name: Publish to pub.dev
+        if: github.event.inputs.dry_run == 'false' && github.event_name == 'workflow_dispatch'
+        uses: k-paxian/dart-package-publisher@v1.6
+        with:
+          credentialJson: ${{ secrets.PUB_CREDENTIALS }}
+          flutter: true
+          skipTests: true

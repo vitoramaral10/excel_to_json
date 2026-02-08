@@ -1,5 +1,99 @@
 # Changelog
 
+## [v2.0.0] - February 8, 2026
+
+### 🎉 Major New Features
+
+#### ✨ Progress Tracking
+- **NEW**: Added `ProgressCallback` typedef for monitoring conversion progress
+- Callbacks invoked at key points: starting worksheets, periodically during row processing, and upon completion
+- Integrate with UI progress indicators for better user experience
+
+#### 🎯 Worksheet Selection
+- **NEW**: Added `selectedWorksheets` configuration option
+- Convert only specific worksheets instead of all worksheets
+- More control over conversion process and improved performance when dealing with large Excel files
+
+#### 📅 Custom Date Formatting
+- **IMPLEMENTED**: Custom date format patterns using the `intl` package
+- Supports all DateFormat patterns (e.g., 'yyyy-MM-dd', 'dd/MM/yyyy HH:mm:ss', 'MMM d, y')
+- Graceful fallback to default formatting if custom pattern fails
+
+### 🔧 Improvements
+
+#### Code Quality
+- Expanded test suite from 6 to 15+ unit tests
+- Added integration tests with real Excel file fixtures
+- Created script to generate test Excel files programmatically
+- Improved code coverage significantly
+
+#### CI/CD
+- **NEW**: GitHub Actions workflow for automated testing
+- **NEW**: Static code analysis workflow
+- **NEW**: Coverage reporting with Codecov integration
+- **NEW**: Automated publishing workflow for pub.dev
+
+#### Example App
+- **NEW**: Dark mode support with manual toggle
+- Improved UI/UX with Material Design 3
+- Better visual feedback during conversion
+- Configuration options now exposed in UI
+
+#### Dependencies
+- Updated `excel` from 4.0.3 to 4.0.6
+- Updated `file_picker` from 10.2.1 to 10.3.10
+- Updated SDK requirement from 3.1.0 to 3.5.0
+- Added `intl` ^0.19.0 for date formatting
+
+### 📝 Breaking Changes
+
+> [!WARNING]
+> This is a major version update with potential breaking changes
+
+- **API Addition**: `ExcelToJsonConfig` now includes new optional parameters:
+  - `onProgress` (ProgressCallback?)
+  - `selectedWorksheets` (List<String>?)
+- **Date Handling**: Date/time cell values are now converted to DateTime objects before formatting, which may affect custom serialization
+- Existing code will continue to work without modifications, but you may want to take advantage of new features
+
+### 🔄 Migration Guide
+
+```dart
+// v1.x code (still works in v2.0)
+final converter = ExcelToJson();
+final result = await converter.convert();
+
+// v2.0 with new features
+final converter = ExcelToJson(
+  config: ExcelToJsonConfig(
+    // Custom date format
+    dateFormat: 'dd/MM/yyyy',
+    
+    // Only convert specific sheets
+    selectedWorksheets: ['Sheet1', 'Products'],
+    
+    // Track progress
+    onProgress: (current, total, message) {
+      print('Progress: $current/$total - $message');
+    },
+    
+    // Other existing options
+    includeEmptyRows: true,
+    verbose: true,
+  ),
+);
+final result = await converter.convert();
+```
+
+### 📚 Documentation
+
+- Updated README with new features and examples
+- Added comprehensive inline documentation
+- Improved API documentation
+- Better examples in example app
+
+---
+
 ## [v1.5.1] - August 6, 2025
 
 ### 📝 Documentation Changes

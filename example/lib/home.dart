@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({required this.onToggleTheme, Key? key}) : super(key: key);
+
+  final VoidCallback onToggleTheme;
 
   @override
   State<Home> createState() => _HomeState();
@@ -74,21 +76,23 @@ class _HomeState extends State<Home> {
         print('ExcelToJsonException: $e');
       }
     } catch (e) {
+      final errorMessage = e.toString();
       setState(() {
-        _jsonResult = 'Unexpected error: $e';
+        _jsonResult = 'Unexpected error: $errorMessage';
       });
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ Unexpected error: $e'),
+            content: Text(
+                '❌ Error: ${errorMessage.length > 100 ? '${errorMessage.substring(0, 100)}...' : errorMessage}'),
             backgroundColor: Colors.red,
           ),
         );
       }
 
       if (kDebugMode) {
-        print('Unexpected error: $e');
+        print('Unexpected error: $errorMessage');
       }
     } finally {
       setState(() {
@@ -117,10 +121,19 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Excel to JSON Converter'),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        actions: [
+          IconButton(
+            onPressed: widget.onToggleTheme,
+            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+            tooltip: 'Toggle theme',
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
