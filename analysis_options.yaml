@@ -2,12 +2,9 @@
 # This file configures the analyzer, which statically analyzes Dart code to
 # check for errors, warnings, and lints.
 
-include: package:flutter_lints/flutter.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
-  exclude:
-    - "**/*.g.dart"
-    - "**/*.freezed.dart"
   language:
     strict-casts: true
     strict-raw-types: true
@@ -42,7 +39,6 @@ linter:
     avoid_returning_null_for_void: true
     avoid_setters_without_getters: true
     avoid_single_cascade_in_expression_statements: true
-    avoid_unnecessary_containers: true
     avoid_unused_constructor_parameters: true
     avoid_void_async: true
     cascade_invocations: true
@@ -54,7 +50,6 @@ linter:
     eol_at_end_of_file: true
     exhaustive_cases: true
     file_names: true
-    flutter_style_todos: true
     missing_whitespace_between_adjacent_strings: true
     no_runtimeType_toString: true
     noop_primitive_operations: true
@@ -88,8 +83,6 @@ linter:
     provide_deprecation_message: true
     public_member_api_docs: true
     require_trailing_commas: true
-    sized_box_for_whitespace: true
-    sort_child_properties_last: true
     sort_constructors_first: true
     sort_unnamed_constructors_first: true
     tighten_type_of_initializing_formals: true
@@ -103,10 +96,7 @@ linter:
     unnecessary_nullable_for_final_variable_declarations: true
     unnecessary_parenthesis: true
     unnecessary_raw_strings: true
-    use_colored_box: true
-    use_decorated_box: true
     use_enums: true
-    use_full_hex_values_for_flutter_colors: true
     use_function_type_syntax_for_parameters: true
     use_if_null_to_convert_nulls_to_bools: true
     use_is_even_rather_than_modulo: true

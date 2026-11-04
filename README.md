@@ -1,228 +1,312 @@
-# Excel to JSON
+<p align="center">
+  <img src="doc/images/banner.webp" alt="excel_to_json: turn .xlsx and CSV spreadsheets into JSON" width="100%">
+</p>
 
-[![pub package](https://img.shields.io/pub/v/excel_to_json.svg)](https://pub.dev/packages/excel_to_json)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![pub points](https://img.shields.io/pub/points/excel_to_json)](https://pub.dev/packages/excel_to_json/score)
-[![popularity](https://img.shields.io/pub/popularity/excel_to_json)](https://pub.dev/packages/excel_to_json/score)
+<p align="center">
+  <a href="https://pub.dev/packages/excel_to_json"><img src="https://img.shields.io/pub/v/excel_to_json?logo=dart&label=pub&color=0175C2" alt="pub version"></a>
+  <a href="https://pub.dev/packages/excel_to_json/score"><img src="https://img.shields.io/pub/points/excel_to_json?logo=dart" alt="pub points"></a>
+  <a href="https://pub.dev/packages/excel_to_json/score"><img src="https://img.shields.io/pub/likes/excel_to_json?logo=dart" alt="pub likes"></a>
+  <a href="https://pub.dev/packages/excel_to_json/score"><img src="https://img.shields.io/pub/dm/excel_to_json?logo=dart" alt="downloads"></a>
+  <a href="https://github.com/vitoramaral10/excel_to_json/actions/workflows/test.yml"><img src="https://github.com/vitoramaral10/excel_to_json/actions/workflows/test.yml/badge.svg" alt="tests"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="license"></a>
+</p>
 
-A Flutter package that converts Excel (.xlsx) files to JSON format, making it easy to work with spreadsheet data in your Flutter applications.
+<p align="center">
+  <b>Turn any Excel or CSV spreadsheet into JSON with one call.</b><br>
+  Formula results, dates, merged cells, title rows: handled. Pure Dart, every platform, plus a CLI.
+</p>
 
-## 🚀 Quick Example
+<p align="center">
+  🇧🇷 <i>Converta planilhas Excel (.xlsx) e CSV em JSON ou em mapas Dart, em Dart puro: resultado de fórmulas, datas, células mescladas, cabeçalho em qualquer linha.</i>
+</p>
 
-```dart
-import 'package:excel_to_json/excel_to_json.dart';
-
-// Simple conversion
-final converter = ExcelToJson();
-final jsonString = await converter.convert(); // Opens file picker
-
-// With custom configuration  
-final converter = ExcelToJson(
-  config: ExcelToJsonConfig(
-    includeEmptyRows: true,
-    verbose: true,
-  ),
-);
-final result = await converter.convert();
-```
-
-## Features
-
-✅ **Simple Integration** - Easy to use API with just a few lines of code  
-✅ **Multiple Worksheets** - Supports Excel files with multiple sheets  
-✅ **Type Safety** - Handles various cell types (text, numbers, dates, formulas, booleans)  
-✅ **Configurable** - Customizable conversion options  
-✅ **Error Handling** - Comprehensive error reporting and logging  
-✅ **Cross Platform** - Works on Android, iOS, Web, and Desktop  
-
-## Installation
-
-Add this to your package's `pubspec.yaml` file:
-
-```yaml
-dependencies:
-  excel_to_json: ^1.5.0
-```
-
-Then run:
-
-```bash
-flutter pub get
-```
-
-## Quick Start
-
-### Basic Usage
+---
 
 ```dart
-import 'package:excel_to_json/excel_to_json.dart';
-
-void convertExcelToJson() async {
-  final converter = ExcelToJson();
-  
-  try {
-    final jsonString = await converter.convert();
-    if (jsonString != null) {
-      print('Conversion successful!');
-      print(jsonString);
-    } else {
-      print('No file selected or conversion cancelled.');
-    }
-  } on ExcelToJsonException catch (e) {
-    print('Conversion failed: ${e.message}');
-  }
-}
+final json = const ExcelToJson().toJson(bytes);
 ```
-
-### Advanced Usage with Configuration
-
-```dart
-import 'package:excel_to_json/excel_to_json.dart';
-
-void convertWithConfig() async {
-  const config = ExcelToJsonConfig(
-    includeEmptyRows: true,        // Include rows with all empty cells
-    useDateTimeStrings: false,     // Keep date objects as native types
-    verbose: true,                 // Enable detailed logging
-  );
-  
-  final converter = ExcelToJson(config: config);
-  
-  try {
-    final jsonString = await converter.convert();
-    if (jsonString != null) {
-      // Process your JSON data
-      final data = jsonDecode(jsonString);
-      
-      // Access worksheets by name
-      final sheet1Data = data['Sheet1'] as List<dynamic>;
-      for (final row in sheet1Data) {
-        print('Row data: $row');
-      }
-    }
-  } on ExcelToJsonException catch (e) {
-    print('Error: ${e.message}');
-    if (e.cause != null) {
-      print('Caused by: ${e.cause}');
-    }
-  }
-}
-```
-
-## Configuration Options
-
-The `ExcelToJsonConfig` class provides several options to customize the conversion:
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `includeEmptyRows` | `bool` | `false` | Include rows where all cells are empty |
-| `useDateTimeStrings` | `bool` | `true` | Convert date/time values to strings |
-| `dateFormat` | `String?` | `null` | Custom date format pattern (future feature) |
-| `verbose` | `bool` | `false` | Enable detailed logging during conversion |
-
-## Output Format
-
-The package converts Excel files to JSON with the following structure:
 
 ```json
-{
-  "Sheet1": [
-    {
-      "Name": "John Doe",
-      "Age": 30,
-      "Email": "john@example.com"
-    },
-    {
-      "Name": "Jane Smith",
-      "Age": 25,
-      "Email": "jane@example.com"
-    }
-  ],
-  "Sheet2": [
-    {
-      "Product": "Widget",
-      "Price": 19.99,
-      "InStock": true
-    }
-  ]
+{"People": [{"Name": "Ana", "Age": 30, "Admin": true, "Total": 120.5},
+            {"Name": "Bruno", "Age": 41, "Admin": false, "Total": 98}]}
+```
+
+## ✨ Features
+
+|     | Feature | Details |
+|-----|---------|---------|
+| 📑 | **.xlsx and CSV** | Detected from the content; Excel, Google Sheets and LibreOffice files |
+| 🧮 | **Formula results** | `=SUM(...)` gives the number Excel saved, not the formula text |
+| 📅 | **Real dates** | Date-formatted cells come as dates, times as times, in any format |
+| 🏷️ | **Header anywhere** | Skip title rows with `headerRow`, or use column letters with no header |
+| 🔗 | **Merged cells** | Optionally repeat a merged value in every cell it covers |
+| 🔑 | **Clean keys** | Trimmed, unique (`Name`, `Name_2`), or `snake_case` / `camelCase` |
+| 🗂️ | **Pick sheets** | Convert every sheet or only the ones you name |
+| 🖥️ | **Command line** | `excel-to-json report.xlsx > report.json` |
+| 🌍 | **Pure Dart** | No plugins: Android, iOS, web, desktop, CLI and server |
+
+## 🚀 Install
+
+```bash
+dart pub add excel_to_json      # or: flutter pub add excel_to_json
+```
+
+## 📖 Usage
+
+The converter takes the bytes of an `.xlsx` or `.csv` file, wherever they come
+from, and detects which one it is.
+
+### From a file (CLI, server, desktop)
+
+```dart
+import 'dart:io';
+
+import 'package:excel_to_json/excel_to_json.dart';
+
+final bytes = File('people.xlsx').readAsBytesSync();
+print(const ExcelToJson().toJson(bytes));
+```
+
+### Picked by the user in Flutter
+
+With [`file_picker`](https://pub.dev/packages/file_picker) 13:
+
+```dart
+final file = await FilePicker.pickFile(
+  type: FileType.custom,
+  allowedExtensions: ['xlsx', 'csv'],
+);
+if (file == null) return; // cancelled
+
+final json = const ExcelToJson().toJson(await file.readAsBytes());
+```
+
+### From an asset or a download
+
+```dart
+// Flutter asset
+final data = await rootBundle.load('assets/people.xlsx');
+final map = const ExcelToJson().toMap(data.buffer.asUint8List());
+
+// HTTP
+final response = await http.get(Uri.parse('https://example.com/people.xlsx'));
+final rows = const ExcelToJson().toMap(response.bodyBytes)['People'];
+```
+
+### Without freezing a Flutter screen
+
+A large spreadsheet takes a moment to convert. Run it off the UI thread with
+`compute` from `package:flutter/foundation.dart`:
+
+```dart
+final map = await compute(const ExcelToJson().toMap, bytes);
+```
+
+### Map or JSON
+
+`toMap` gives `Map<String, List<Map<String, Object?>>>`, sheet name to rows,
+ready to feed your models. `toJson` gives the same shape as a string.
+
+```dart
+final sheets = const ExcelToJson().toMap(bytes);
+for (final row in sheets['People']!) {
+  print('${row['Name']} is ${row['Age']}');
 }
 ```
 
-Each worksheet becomes a top-level property, and each row (except the header) becomes an object in the array.
+## 🧾 Real-world spreadsheets
 
-## Supported Cell Types
+### A title above the header
 
-The package handles all standard Excel cell types:
+Reports often start with a title and a blank line. Say which row has the
+column names, numbered as Excel shows it:
 
-- **Text** - String values
-- **Numbers** - Integer and floating-point numbers
-- **Booleans** - TRUE/FALSE values
-- **Dates** - Date values (converted to strings by default)
-- **Times** - Time values (converted to strings by default)
-- **DateTime** - Combined date and time values
-- **Formulas** - Formula expressions (shows the formula, not the result)
-- **Empty cells** - Represented as `null` in JSON
+```dart
+const converter = ExcelToJson(config: ExcelToJsonConfig(headerRow: 3));
+```
 
-## Error Handling
+### No header at all
 
-The package provides detailed error information through the `ExcelToJsonException` class:
+With `headerRow: null` every row is data and the keys are the column letters:
+
+```dart
+const converter = ExcelToJson(config: ExcelToJsonConfig(headerRow: null));
+// [{"A": "Ana", "B": 30}, {"A": "Bruno", "B": 41}]
+```
+
+A column with data but no name in the header also gets its letter, so nothing
+is lost.
+
+### Merged cells
+
+In the file, a merged cell holds its value only in its top-left cell. To repeat
+it in every row and column it covers, as it looks on screen:
+
+```dart
+const converter = ExcelToJson(config: ExcelToJsonConfig(fillMergedCells: true));
+// Region "South" merged over two rows:
+// [{"Region": "South", "City": "Curitiba"}, {"Region": "South", "City": "Porto Alegre"}]
+```
+
+### Keys ready for code
+
+```dart
+const converter = ExcelToJson(
+  config: ExcelToJsonConfig(keyStyle: KeyStyle.snakeCase),
+);
+// "Data de Nascimento" -> "data_de_nascimento", "Endereço (Rua)" -> "endereco_rua"
+```
+
+`KeyStyle.camelCase` gives `dataDeNascimento`. The default keeps the header
+text, with extra spaces removed. Repeated names become `Name`, `Name_2`,
+`Name_3`.
+
+### Only some sheets
+
+```dart
+const converter = ExcelToJson(config: ExcelToJsonConfig(sheets: ['Sales']));
+```
+
+Naming a sheet the file does not have throws an `ExcelToJsonException` that
+lists the sheets it does have. To keep every sheet but the hidden ones (often
+lookup tables), set `includeHiddenSheets: false`.
+
+## 🖥️ Command line
+
+```bash
+dart pub global activate excel_to_json
+
+excel-to-json people.xlsx                         # JSON on stdout
+excel-to-json report.xlsx --header-row 3 --keys snake --pretty > report.json
+excel-to-json data.csv --sheet Sheet1 --empty-rows
+```
+
+`excel-to-json --help` lists every option; they mirror `ExcelToJsonConfig`
+and also take the form `--option=value`. Exit codes: `64` bad usage, `65`
+unreadable spreadsheet, `66` file not found, `74` output not written.
+
+## 🔤 Cell values
+
+| In the spreadsheet     | In `toMap`                                    | In `toJson`        |
+|------------------------|-----------------------------------------------|--------------------|
+| Text                   | `String`                                      | string             |
+| Whole number           | `int`                                         | number             |
+| Decimal, %, currency   | `double` (`5%` is `0.05`); `int` when whole   | number             |
+| TRUE / FALSE           | `bool`                                        | boolean            |
+| Date, date and time    | ISO 8601 `String` (or `DateTime`, see below)  | ISO 8601 string    |
+| Time of day            | `HH:mm:ss` `String` (or `Duration`)           | `HH:mm:ss` string  |
+| Elapsed time `[h]:mm`  | `HH:mm:ss`, hours can pass 24 (or `Duration`) | string             |
+| Formula                | The result Excel saved                        | as its type        |
+| Error (`#N/A`)         | The error text                                | string             |
+| Empty cell             | `null`                                        | null               |
+| Any CSV field          | `String`; empty field `null`, `""` is `''`    | string or null     |
+
+CSV values stay text so codes like `01310100` keep their leading zero; convert
+them in your model.
+
+## ⚙️ All options
+
+```dart
+const converter = ExcelToJson(
+  config: ExcelToJsonConfig(
+    headerRow: 1,               // row with the column names; null for none
+    sheets: null,               // only these sheets; null for all
+    includeHiddenSheets: true,  // false: leave out sheets hidden in Excel
+    keyStyle: KeyStyle.original, // or snakeCase, camelCase
+    includeEmptyRows: false,    // keep rows with no values
+    useDateTimeStrings: true,   // false: DateTime/Duration in toMap
+    formulaResults: true,       // false: the formula text instead
+    fillMergedCells: false,     // repeat merged values
+  ),
+);
+```
+
+`toJson` always writes dates as strings, since JSON has no date type.
+
+Files written by tools that do not compute formulas (some libraries) have no
+saved result; those cells give the formula text. With `formulaResults: false`,
+a formula filled down a column gives its text only in the first cell: the
+others store just a reference to it, so they give their result.
+
+## 📄 CSV files
+
+CSV is detected automatically and comes as one sheet named `Sheet1`. The
+delimiter (`,`, `;` or tab) is the one used consistently on the first lines,
+so files saved by Excel in Brazil, which use `;` and decimal commas, work as
+they are, title line included. Quoted fields, line breaks inside quotes, a
+UTF-8 BOM and Windows-1252 files (Excel's default on Windows) are handled.
+
+## 🚨 Errors
+
+Files that cannot be read throw `ExcelToJsonException`, with the original error
+in `cause`: corrupt files, legacy `.xls` files (save them as `.xlsx`), and
+sheets named in `sheets` that do not exist.
 
 ```dart
 try {
-  final result = await converter.convert();
+  const ExcelToJson().toJson(bytes);
 } on ExcelToJsonException catch (e) {
-  print('Conversion failed: ${e.message}');
-  
-  // Check if there's an underlying cause
-  if (e.cause != null) {
-    print('Underlying error: ${e.cause}');
-  }
+  print('Could not convert: ${e.message}');
 }
 ```
 
-## Platform Support
+## ⬆️ Migrating from 1.x
 
-This package supports all platforms where Flutter runs:
+2.0 removes the built-in file picker, so the package is pure Dart and works
+everywhere, with no native plugin or minimum iOS version imposed on your app.
 
-- ✅ Android
-- ✅ iOS  
-- ✅ Web
-- ✅ Windows
-- ✅ macOS
-- ✅ Linux
+| 1.x | 2.0 |
+|-----|-----|
+| `await ExcelToJson().convert()` (opened a picker, returned `String?`) | Pick the file yourself ([example](#picked-by-the-user-in-flutter)), then `ExcelToJson().toJson(bytes)` |
+| `ExcelToJsonConfig(verbose: ...)` | Removed |
+| `ExcelToJsonConfig(dateFormat: ...)` | Removed (it was never applied) |
+| Formulas came as their text | They come as their result; `formulaResults: false` restores the text |
+| Columns with a blank header were dropped | They keep their data under the column letter |
 
-## Limitations
+2.0 also fixes 1.x bugs: text cells crashed the conversion, a blank header
+cell shifted the following columns, `useDateTimeStrings: false` crashed, and
+empty rows were never skipped.
 
-- Only supports `.xlsx` files (Excel 2007+ format)
-- Does not support `.xls` files (Excel 97-2003 format)
-- Formula results are not calculated (shows formula text instead)
-- Charts, images, and other embedded objects are ignored
+## ❓ FAQ
 
-## Example App
+<details>
+<summary><b>Does it read .xls or .ods?</b></summary>
 
-Check out the `/example` folder for a complete Flutter app demonstrating how to use this package.
+No. `.xlsx` (Excel 2007 and later, also saved by Google Sheets and
+LibreOffice) and CSV. Save older `.xls` and `.ods` files as `.xlsx`.
+</details>
 
-## Contributing
+<details>
+<summary><b>Does it read images, comments or colors?</b></summary>
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+No, only cell values: text, numbers, booleans, dates and formula results.
+Images, comments, formatting and charts are left out.
+</details>
 
-### Development Setup
+<details>
+<summary><b>How big a file can it handle?</b></summary>
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/excel_to_json.git`
-3. Install dependencies: `flutter pub get`
-4. Run tests: `flutter test`
-5. Make your changes and add tests
-6. Submit a pull request
+Sheets are read as a stream of XML events, not loaded as a document tree: a
+20,000-row, 10-column sheet converts in about 2 seconds on a laptop, using
+tens of megabytes. The whole result is kept in memory, as a map.
+</details>
 
-## Changelog
+<details>
+<summary><b>Why is a formula cell showing the formula text?</b></summary>
 
-See [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes.
+The file has no saved result for it, which happens when it was written by a
+tool that does not compute formulas. Open and save it in Excel, Google Sheets
+or LibreOffice and the results are stored.
+</details>
 
-## License
+## 🤝 Contributing
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Bug reports and pull requests are welcome; see
+[CONTRIBUTING.md](CONTRIBUTING.md). A small `.xlsx` that shows the problem
+helps the most. If the package helps you, ⭐ the
+[repository](https://github.com/vitoramaral10/excel_to_json) and 👍 it on
+[pub.dev](https://pub.dev/packages/excel_to_json).
 
-## Support
+## 📄 License
 
-If you find this package helpful, please give it a ⭐ on [GitHub](https://github.com/vitoramaral10/excel_to_json) and [pub.dev](https://pub.dev/packages/excel_to_json)!
+[MIT](LICENSE).
