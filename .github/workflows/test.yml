@@ -1,0 +1,68 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Get dependencies
+        run: dart pub get
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib test example bin
+
+      - name: Analyze
+        run: dart analyze --fatal-infos lib test example bin
+
+      - name: Run tests with coverage
+        run: dart test --coverage=coverage
+
+      - name: Check coverage (minimum 90%)
+        run: |
+          dart pub global activate coverage
+          dart pub global run coverage:format_coverage \
+            --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+          awk -F: '/^LF:/ {lf += $2} /^LH:/ {lh += $2}
+            END {
+              pct = lf ? lh * 100 / lf : 0
+              printf "Coverage: %.1f%%\n", pct
+              if (pct < 90) { print "::error::Coverage below 90%"; exit 1 }
+            }' coverage/lcov.info
+
+  # The lowest archive and xml versions allowed by pubspec.yaml must still work.
+  downgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      # Resolve everything first so only archive and xml go down; the test
+      # tools stay at versions that build on current Dart.
+      - name: Resolve runtime dependencies at their minimum
+        run: |
+          dart pub get
+          dart pub downgrade archive xml
+
+      - name: Run tests
+        run: dart test

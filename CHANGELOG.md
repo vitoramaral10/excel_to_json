@@ -1,5 +1,62 @@
 # Changelog
 
+## [2.0.0] - 2026-11-04
+
+### Breaking
+- Pure Dart: the package no longer depends on Flutter or `file_picker`, so it
+  runs in CLIs and servers and imposes no plugin or minimum iOS version on your
+  app.
+- `convert()`, which opened a file picker, is gone. Pick the file yourself and
+  pass its bytes to `toJson(bytes)` (JSON string) or `toMap(bytes)` (Dart map).
+  See "Migrating from 1.x" in the README.
+- `ExcelToJsonConfig.verbose` and `ExcelToJsonConfig.dateFormat` (never
+  applied) are removed.
+- Formula cells give the result Excel saved instead of the formula text
+  (`formulaResults: false` restores the text).
+- A column with data but a blank header keeps its values under its column
+  letter (`C`) instead of being dropped.
+
+### Added
+- CSV files, detected from the content: `,`, `;` or tab delimiter (decimal
+  commas and title lines do not confuse it), quoted fields, UTF-8 (with BOM)
+  or Windows-1252. Fields come as text.
+- `headerRow`: the row with the column names, for files with a title above
+  them; `null` for files with no header, keyed by column letter.
+- `fillMergedCells`: repeat a merged cell's value in every cell it covers.
+- `sheets`: convert only the named sheets; `includeHiddenSheets: false` leaves
+  out the sheets hidden in Excel.
+- `keyStyle`: `KeyStyle.snakeCase` and `KeyStyle.camelCase` keys, without
+  accents. Keys are always trimmed, and repeated names become `Name_2`.
+- Times of day and elapsed times (`[h]:mm`) from their number format; dates in
+  the 1904 date system and the East Asian built-in date formats; ISO date
+  cells (`t="d"`); Excel's `_x000D_` text escapes.
+- Legacy `.xls` files get a clear error instead of a generic one.
+- `excel-to-json` command line tool (`dart pub global activate excel_to_json`),
+  with the same options as `ExcelToJsonConfig`.
+
+### Changed
+- Spreadsheets are read by the package itself, streaming the sheet XML, instead
+  of through `package:excel`. A 20,000-row sheet converts about 4x faster and
+  with a fraction of the memory, and files `package:excel` could not open now
+  work: built-in number formats declared again (common in files written by
+  Apache POI), currency formats, and repeated entries in the shared string
+  table, which shifted or crashed every text cell after them.
+
+### Fixed
+- Text cells crashed the conversion: `package:excel` returns them as a
+  `TextSpan`, which `jsonEncode` cannot write.
+- A blank header cell shifted every column after it.
+- `useDateTimeStrings: false` crashed with `JsonUnsupportedObjectError`; dates
+  now come as `DateTime` (and times as `Duration`) in `toMap`, and as strings
+  in `toJson`.
+- Empty rows were never skipped; now they are unless `includeEmptyRows` is set.
+- Unreadable files always throw `ExcelToJsonException`.
+
+### Internal
+- Tests convert real spreadsheets: written by `package:excel`, hand-written
+  XML for what it cannot produce, and CSV. CI runs them with the lowest
+  `archive` and `xml` versions too.
+
 ## [v1.5.1] - August 6, 2025
 
 ### 📝 Documentation Changes
