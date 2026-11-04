@@ -57,8 +57,12 @@ jobs:
         with:
           sdk: stable
 
+      # Resolve everything first so only archive and xml go down; the test
+      # tools stay at versions that build on current Dart.
       - name: Resolve runtime dependencies at their minimum
-        run: dart pub downgrade archive xml
+        run: |
+          dart pub get
+          dart pub downgrade archive xml
 
       - name: Run tests
         run: dart test
